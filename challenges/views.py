@@ -14,18 +14,13 @@ challenges_dict = {
     "september": "Mindfulness Meditation: Meditate for 10 minutes every morning. Use apps or guided videos if you’re new to the practice.",
     "october": "Eco-Friendly October: Reduce waste by using reusable bags, bottles, and containers. Pick up litter in your neighborhood once a week.",
     "november": "Community Connection: Attend a local event or workshop. Meet new people and support community initiatives.",
-    "december": "Reflection and Rest: Spend 10 minutes each day reflecting on the year. Prioritize rest and set intentions for the new year."
+    "december": None #"Reflection and Rest: Spend 10 minutes each day reflecting on the year. Prioritize rest and set intentions for the new year."
 }
 
 def index(request):
     list_items= ""
     months = list(challenges_dict.keys())
-    for month in months:
-        capitalized_month = month.capitalize()
-        month_path = reverse("month_challenge", args=[month])
-        list_items += f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
-    response_data = f"<ul>{list_items}</ul>"
-    return HttpResponse(response_data)
+    return render(request, "challenges/index.html", {"months": months})
 
 # Create your views here.
 def monthly_challenge_by_number(request, month):
@@ -39,7 +34,7 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenges(request, month):
     try:
         challenge_text = challenges_dict[month]
-        response_data = f"<h1>{challenge_text}</h1>"
-        return HttpResponse(response_data)
+        return render(request, "challenges/challenge.html", {"text": challenge_text, 
+                                                             "month_name": month})
     except:
         return HttpResponseNotFound("<h1>this month is not supported</h1>")
