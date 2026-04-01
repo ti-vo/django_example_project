@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+
 
 challenges_dict = {
     "january": "Digital Detox: Spend one weekend without screens. Use the time to journal, read, or connect with loved ones in person.",
@@ -37,4 +38,4 @@ def monthly_challenges(request, month):
         return render(request, "challenges/challenge.html", {"text": challenge_text, 
                                                              "month_name": month})
     except:
-        return HttpResponseNotFound("<h1>this month is not supported</h1>")
+        raise Http404()
